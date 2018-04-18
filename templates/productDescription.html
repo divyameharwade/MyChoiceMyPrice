@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+<title>Product Description</title>
+<link rel="stylesheet" href={{url_for('static', filename='css/bootstrap.min.css')}} />
+<link rel="stylesheet" href={{url_for('static', filename='css/productDescription.css')}} />
+<link rel="stylesheet" href={{ url_for('static', filename='css/topStyle.css')}} />
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.js') }}">
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/bootstrap.min.js') }}">
+</script>
+</head>
+<body>
+<div id="title">
+	<a href="/">
+		<img id="logo" src= {{ url_for('static', filename='images/logo.png') }} />
+	</a>
+	<form>
+		<input id="searchBox" type="text" name="searchQuery">
+		<input id="searchButton" type="submit" value="Search">
+	</form>
+
+	{% if not loggedIn %}
+	<div id="signInButton">
+		<a class="link" href="/loginForm">Sign In</a>
+	</div>
+	{% else %}
+	<div class="dropdown">
+		<button class="dropbtn">Hello, <br>{{firstName}}</button>
+		<div class="dropdown-content">
+			<a href="/account/orders">Your orders</a>
+			<a href="/account/profile">Your profile</a>
+			<hr>
+			<a href="/logout">Sign Out</a>
+		</div>
+	</div>
+	{% endif %}
+	<div id="kart">
+		<a class="link" href="/cart">
+			<img src={{url_for('static', filename='images/shoppingCart.png')}} id="cartIcon" />
+			CART {{noOfItems}}
+		</a>
+	</div>
+	<div id="wishlist">
+		<a class="link" href="/wishlist">
+			<img src={{url_for('static', filename='images/wishlist.png')}} id="wishlistIcon" />
+			WISHLIST {{wishlistnoOfItems}}
+		</a>
+	</div>
+</div>
+<div id="display">
+	<div id="productName">
+		<h1>{{data[1]}}</h1>
+	</div>
+	<div>
+		<img src={{url_for('static', filename='uploads/'+data[4]) }} id="productImage"/>
+	</div>
+
+	<div id="productDescription">
+		<h2>Details</h2>
+		<table id="descriptionTable">
+			<tr>
+				<td>Name</td>
+				<td>{{data[1]}}</td>
+			</tr>
+			<tr>
+				<td>Price</td>
+				<td>${{data[2]}}</td>
+			</tr>
+			<tr>
+				<td>Stock</td>
+				<td>{{data[5]}}</td>
+			</tr>
+		</table>
+		<h2>Description</h2>
+		<p>{{data[3]}}</p>
+	</div>
+	<div >
+	<div id="addToCart" style="display: inline-block;">
+		<a href="/addToCart?productId={{request.args.get('productId')}}" class="btn btn-lg btn-success">Add to Cart</a>
+	</div>
+	<div id="addToWishlist" style="display: inline-block;">
+		<button class="btn btn-lg btn-info" data-toggle="modal" data-target="#setPriceModal">Add to Wishlist</button>
+	</div>
+	</div>
+</div>
+<!--set price modal-->
+<div class="modal_div">
+<div class="modal fade" id="setPriceModal" tabindex="-1" role="dialog" aria-labelledby="setPriceModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <h6 class="modal-title" id="setPriceModalLabel bold">Extend Job</h6>
+                <button type="button" class="close custom-close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+			  <form action="/addToWishlist"  method="POST" >
+              <div class="modal-body">
+				  <p ><input type="text" class="hidden" name="productId" value="{{request.args.get('productId')}}"/></p>
+				  <p>My price for this product is <input type="text" class="input-sm numonlycheck" name="myPrice"> Dollars</input></p>
+
+			  </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
+                <input type="submit" class="btn btn-danger submitBtn" value="Set Price"/>
+
+              </div>
+			  </form>
+            </div>
+          </div>
+      </div>
+</div>
+
+
+</body>
+</html>
+
