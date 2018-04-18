@@ -10,7 +10,13 @@ app.secret_key = 'random string'
 UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = set(['jpeg', 'jpg', 'png', 'gif'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = '0505invincible@gmail.com'
+app.config['MAIL_PASSWORD'] = 'pcmbinpuc2'
 mail=Mail(app)
+
 
 def getLoginDetails(wishlist=None):
     with sqlite3.connect('database.db') as conn:
@@ -25,6 +31,7 @@ def getLoginDetails(wishlist=None):
             userId, firstName = cur.fetchone()
             if wishlist:
                 cur.execute("SELECT count(productId) FROM wishlist WHERE userId = " + str(userId))
+
             else:
                 cur.execute("SELECT count(productId) FROM kart WHERE userId = " + str(userId))
             noOfItems = cur.fetchone()[0]
@@ -42,7 +49,6 @@ def root():
         itemData = cur.fetchall()
         cur.execute('SELECT categoryId, name FROM categories')
         categoryData = cur.fetchall()
-    itemData = parse(itemData)   
     return render_template('home.html', itemData=itemData, loggedIn=loggedIn, firstName=firstName, noOfItems=noOfItems,wishlistnoOfItems=wishlistnoOfItems, categoryData=categoryData)
 
 
@@ -88,7 +94,7 @@ def addItem():
 @app.route("/updateItemPrice", methods=["GET", "POST"])
 def updateItemPrice():
     if request.method == "POST":
-        productId = request.form['productId']
+        productId = int(request.form['productId'])
         price = float(request.form['price'])
 
         with sqlite3.connect('database.db') as conn:
@@ -101,12 +107,19 @@ def updateItemPrice():
                 # get all users and get items from
                 cur.execute("SELECT userId FROM users")
                 userId = cur.fetchone()[0]
-                cur.execute("SELECT products.productId from products, wishlist WHERE products.productId = wishlist.productId AND wishlist.userId = " + str(
+                cur.execute("SELECT products.productId, wishlist.user_price from products, wishlist WHERE products.productId = wishlist.productId AND wishlist.userId = " + str(
                             userId))
                 wishlistproducts = cur.fetchall()
-                print(userId, wishlistproducts)
-            except:
+                producthash = {i[0]:i[1] for i in wishlistproducts}
+                print(producthash)
+                if productId in producthash.keys() and price <= producthash.get(productId):
+                    # trigger email
+                    print("criteria matched")
+                    utils.send_email(subject="Product price reached your price", message="The product has been checked out for purchase for you as it has reached your set price value")
+                    return redirect(url_for('addToCart', productId=productId))
+            except Exception as ex:
                 msg="error occured"
+                print(ex)
                 conn.rollback()
         conn.close()
         print(msg)
@@ -464,6 +477,64 @@ def register():
 @app.route("/registerationForm")
 def registrationForm():
     return render_template("register.html")
+
+
+@app.route("/updatePrice")
+def UpdatePriceForm():
+    return render_template("updatePrice.html")
+
+
+@app.route("/setpromocode")
+def setPromoForm():
+    return render_template("addpromocode.html")
+
+
+@app.route("/addPromo", methods=['POST'])
+def addPromo():
+    if 'email' not in session:
+        return redirect(url_for('/root'))
+    else:
+        promoname = request.form['promoname']
+        discount = request.form['discount']
+        categoryId = request.form['categoryId']
+        effect_date = request.form['effect_date']
+        expiry_date = request.form['expiry_date']
+        min_order = request.form['min_order']
+        with sqlite3.connect('database.db') as con:
+            try:
+                cur =con.cursor()
+                cur.execute('''insert into promocode (promoname,discount,effective_date,expiry_date,minimum_order,categoryId) VALUES (?, ?, ?, ?, ?, ?)''',(promoname,discount,effect_date,expiry_date,min_order,categoryId))
+                con.commit()
+                msg = "Promocode successfully added"
+                promocodes = getPromo()
+            except Exception as ex:
+                con.rollback()
+                msg = "error occurred",ex
+        con.close()
+    return render_template('promocode.html', promocodes=promocodes)
+
+
+
+def getPromo():
+    if 'email' not in session:
+        return redirect(url_for('/root'))
+    else:
+        promoId = request.args.get('promoId', None)
+        data = {}
+        with sqlite3.connect('database.db') as con:
+            try:
+                cur = con.cursor()
+                if promoId:
+                    cur.execute('''select * from promocode where promoId={}'''.format(promoId))
+                    data = cur.fetchone()
+                else:
+                    cur.execute('''select * from promocode''')
+                    data = cur.fetchall()
+
+            except Exception as ex:
+               print(ex)
+        con.close()
+        return data
 
 
 def allowed_file(filename):

@@ -1,0 +1,28 @@
+<html>
+<head>
+<title>Update Product Price</title>
+<link rel="stylesheet" href={{url_for('static', filename='css/bootstrap.min.css')}} />
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.js') }}">
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/bootstrap.min.js') }}">
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/validateForm.js') }}">
+</script>
+</head>
+<body>
+<form action="/updateItemPrice" method="POST" onsubmit="return validate()">
+    <p>Product Id :<input type="productId" name="productId" required></p>
+
+    <P>New Price: <input type="text" name="price" id="price" required></p>
+
+
+    <p><input type="submit" value="Change Price"></p>
+
+    <a href="/root">Home</a><br><a href="/cart">Go to Cart</a>
+
+</form>
+</body>
+</html>
+
+
+

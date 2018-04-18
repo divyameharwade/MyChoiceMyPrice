@@ -1,19 +1,3 @@
-HTTP/1.1 200 OK
-Date: Fri, 03 Jun 2016 14:23:06 GMT
-Content-Type: text/css
-Content-Length: 121260
-Connection: keep-alive
-Last-Modified: Tue, 24 Nov 2015 19:49:46 GMT
-ETag: "2f624089c65f12185e79925bc5a7fc42"
-Server: NetDNA-cache/2.2
-Expires: Mon, 29 May 2017 14:23:06 GMT
-Cache-Control: max-age=31104000
-Vary: Accept-Encoding
-Access-Control-Allow-Origin: *
-X-Hello-Human: You should work for us! Email: jdorfman+theheader@maxcdn.com or @MaxCDNDeveloper on Twitter
-X-Cache: HIT
-Accept-Ranges: bytes
-
 /*!
  * Bootstrap v3.3.6 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.

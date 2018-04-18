@@ -8,8 +8,12 @@ def send_email(subject, message):
     @param[in] subject: subject line of email
     @param[in] message: message  of the email
     """
-    msg = Message(subject, sender=app.config.get('SENDER'), recipients=app.config.get('RECIPIENT'))
+    msg = Message(subject, sender='0505invincible@gmail.com', recipients=['0505invincible@gmail.com'])
     msg.body = message
-    with app.app_context():
-        mail.send(msg)
-    return "mail sent"
+    try:
+        with app.app_context():
+            mail.send(msg)
+            print("email sent")
+        return "mail sent"
+    except Exception as ex:
+        print(ex)

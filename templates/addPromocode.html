@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>Add Promocode </title>
+<link rel="stylesheet" href={{url_for('static', filename='css/bootstrap.min.css')}} />
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.js') }}">
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/bootstrap.min.js') }}">
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/validateForm.js') }}">
+</script>
+</head>
+<body>
+<form action="/addPromo" method="POST" onsubmit="return validate()">
+    <p>Promo name :<input type="promoname" name="promoname" required></p>
+
+    <P>Discount: <input type="text" name="discount" id="discount" required></p>
+
+    <p>Effective Date: <input type="text" name="effect_date" id="effect_date" required></p>
+
+    <p>Expiry Date: <input type="text" name="expiry_date" id="expiry_date" required></p>
+
+    <p>Minimum Order: <input type="text" name="min_order" id="min_order" required></p>
+
+    <p>Category ID <input type="text" name="categoryId" id="categoryId" required></p>
+
+    <p><input type="submit" value="Add Promo"></p>
+
+    <a href="/root">Home</a><br><br><a href="/cart">Go to Cart</a>
+
+</form>
+</body>
+</html>
+
+
+

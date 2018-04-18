@@ -1,29 +1,10 @@
-
-#itemImage {
-	height: 200px;
-	width: 150px;
+body{
+	background-color: #494949;
+	color: #f0f0f0;
 }
-
-.display {
-	margin-top: 20px;
-	margin-left: 20px;
-	margin-right: 20px;
-	margin-bottom: 20px;
+input {
+	color: #494949;
 }
-
-table {
-	border-spacing: 20px;
-}
-
-#productName {
-	text-align: center;
-	font-weight: bold;
-}
-
-#productPrice {
-	text-align: center;
-}
-
-.displayCategory ul li {
-	font-size: 20px;
+.panel {
+	color: #494949;
 }
