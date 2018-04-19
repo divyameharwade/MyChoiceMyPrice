@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Email</title>
+</head>
+
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="center" valign="top" bgcolor="#838383" style="background-color:#838383;"><br>
+    <br>
+    <table width="600" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <!--<td align="left" valign="top"><img src={{url_for('static',filename="images/top.png")}} width="600" height="177" style="display:block;"></td>-->
+      </tr>
+      <tr>
+        <td align="center" valign="top" bgcolor="#d3be6c" style="background-color:#d3be6c; font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#000000; padding:0px 15px 10px 15px;">
+          <div><img src={{url_for('static', filename="images/divider.png")}} width="517" height="10"></div>
+          <div style="font-size:48px; color:#838383;"><b>Price matched!</b></div>
+          <div><img src={{url_for('static', filename="images/divider.png")}} width="517" height="10"></div>
+          <div style="font-size:24px; color:#555100;"><br>
+            Hurray! <br>Your set price for product {{item[1]}}  has now matched.<br>
+            We have placed the order on your behalf.<br>
+            Stay back and enjoy your product!
+          </div>
+          <div><br>
+            <!--<img src=cid:{{url_for('static', filename="item[-1]")}} width="517" height="10"><br>-->
+                Your set price was: <strong> {{item[2]}} </strong><br>
+
+            <br>
+            <br>
+            <br>
+
+            <br> My Choice My Price  <br>
+<a href="http://www.yourcompanyname.com" target="_blank" style="color:#000000; text-decoration:none;"> http://www.yourcompanyname.com</a></div></td>
+      </tr>
+      <tr>
+        <!--<td align="left" valign="top"><img src={{url_for('static', filename="images/bot.png")}} width="600" height="18" style="display:block;"></td>-->
+      </tr>
+  </table>
+    <br>
+    <br></td>
+  </tr>
+</table>
+</body>
+</html>

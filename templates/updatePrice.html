@@ -1,5 +1,5 @@
-<html>
-<head>
+{% extends "base.html" %}
+{% block head %}
 <title>Update Product Price</title>
 <link rel="stylesheet" href={{url_for('static', filename='css/bootstrap.min.css')}} />
 <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.js') }}">
@@ -8,21 +8,39 @@
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename = 'js/validateForm.js') }}">
 </script>
-</head>
-<body>
-<form action="/updateItemPrice" method="POST" onsubmit="return validate()">
-    <p>Product Id :<input type="productId" name="productId" required></p>
+{% endblock %}
 
-    <P>New Price: <input type="text" name="price" id="price" required></p>
-
-
-    <p><input type="submit" value="Change Price"></p>
-
-    <a href="/root">Home</a><br><a href="/cart">Go to Cart</a>
-
+{% block content %}
+<div style="text-align: center;">
+<form action="/updateItemPrice" class="form-horizontal" method="POST" onsubmit="return validate()">
+    <div class="form-group">
+		<label class="col-sm-2 control-label">Product Id</label>
+			<div class="col-sm-2">
+                <input type="productId" name="productId" required>
+            </div>
+    </div>
+    <div class="form-group">
+		<label class="col-sm-2 control-label">New Price</label>
+			<div class="col-sm-2">
+                <input type="text" name="price" id="price" required></p>
+            </div>
+    </div>
+    <div class="form-group">
+		<label class="col-sm-2 control-label"></label>
+			<div class="col-sm-2">
+                <input type="submit" class="btn btn-danger" value="Change Price"></p>
+            </div>
+    </div>
+    <div class="form-group">
+		<label class="col-sm-2 control-label"></label>
+			<div class="col-sm-2">
+                <a class="btn btn-info inline" href="/root">Home</a>
+                <a class="btn btn-success inline" href="/cart">Go to Cart</a>
+            </div>
+    </div>
 </form>
-</body>
-</html>
+</div>
 
+{% endblock %}
 
 

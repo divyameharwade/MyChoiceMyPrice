@@ -19,7 +19,7 @@
 			<div id="itemName">
 				<span id="itemNameTag">{{row[1]}}</span><br>
 				In stock<br>
-				<a href="/removeFromCart?productId={{row[0]}}">Remove</a>
+				<a class="btn btn-danger" href="/removeFromCart?productId={{row[0]}}">Remove</a>
 			</div>
 			<div id="itemPrice">
 				${{row[2]}}
@@ -27,31 +27,39 @@
 		</div>
 		{% endfor %}
 		<hr id="seperator">
-		<div id="total">
+		<br>
+		<div>
+			<a href="/checkout" class="btn btn-warning">Proceed to checkout</a>&nbsp;&nbsp;
 			<span id="subtotal">Subtotal</span> : ${{totalPrice}}
 		</div>
 	</div>
 </div>
 <div>
-<h4 align="center" class="alert alert-info">Tag this along with your items in the wishlist!</h4>
+<h4 align="center" class="well" style="color: black;">Tag your cart along with the items in your wishlist!</h4>
+<div>
 {% if recommendations %}
 	{% for  (item,promo),total in recommendations.items() %}
-		<div class="inline carddiv" width="400px">
-			<div class="card">
-				<img class="card-img-top" src={{url_for('static', filename='uploads/'+item['image'])}} id="image"/>
-  			<div class="card-body">
-				<h4 class="card-title">{{item['name']}}</h4>
-				<p class="card-text">Promo applied  {{promo['promoname']}}</br>
-					Discount  {{promo['discount']}}% </br>
-					<strong>Your total {{total}}</strong></p>
-    			<a href="/addToCart?productId={{item['productId']}}" class="btn btn-danger">I'll buy this too</a>
-
+		<div class="inline carddiv" >
+			<div class="col">
+			<div class="panel panel-success">
+				<div class="panel-heading">{{item['name']}}</div>
+				<div class="panel-body">
+					<img  src={{url_for('static', filename='uploads/'+item['image'])}} id="image"/>
+  				</div>
+				</div>
+			<div class="panel-footer">
+				Promo applied  {{promo['promoname']}}</br>
+				Discount  {{promo['discount']}}% </br>
+				<strong>Your total {{total}}</strong></p>
+    			<a href="/addToCart?productId={{item['productId']}}&total={{total}}" class="btn btn-danger">I'll buy this too</a>
   			</div>
 			</div>
 		</div>
+		<div class="padding inline"></div>
 	{% endfor %}
 {% endif %}
 </div>
-<a href="/checkout">Proceed to checkout</a>
+</div>
+
 {% endblock %}
 

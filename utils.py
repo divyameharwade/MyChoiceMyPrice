@@ -9,7 +9,7 @@ def send_email(subject, message):
     @param[in] message: message  of the email
     """
     msg = Message(subject, sender='0505invincible@gmail.com', recipients=['0505invincible@gmail.com'])
-    msg.body = message
+    msg.html = message
     try:
         with app.app_context():
             mail.send(msg)

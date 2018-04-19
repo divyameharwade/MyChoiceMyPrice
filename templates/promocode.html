@@ -1,5 +1,5 @@
-<html>
-<head>
+{% extends "base.html" %}
+{% block head %}
 <title>Add Promocode </title>
 <link rel="stylesheet" href={{url_for('static', filename='css/bootstrap.min.css')}} />
 <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.js') }}">
@@ -8,13 +8,21 @@
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename = 'js/validateForm.js') }}">
 </script>
-</head>
-<body>
-<p>{{msg}}</p>
+{% endblock %}
+
+{% block content %}
 
 {% if promocodes %}
-    <table align="center">
-    {% for promo in promocodes %}
+<div class="table-responsive">
+    <table align="center" class="table table-hover">
+
+        {% set names =['PromoId', 'Name', 'Discount','Effective date', 'Expiry date', 'Minimum Order', 'CategoryId' ] %}
+        {% for name in names %}
+        <th>
+            <h5>{{name}}</h5>
+        </th>
+        {% endfor %}
+        {% for promo in promocodes %}
         <tr>
         {% for each in promo %}
             <td>{{each}}<br></td>
@@ -23,8 +31,8 @@
     {% endfor %}
     </table>
 {% endif %}
-</body>
-</html>
+</div>
+{% endblock %}
 
 
 

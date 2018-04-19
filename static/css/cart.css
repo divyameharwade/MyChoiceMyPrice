@@ -63,6 +63,7 @@
 #subtotal {
 	font-weight: bold;
 	font-size: 20px;
+	padding-left: 4.5em;
 }
 
 .inline {
@@ -78,4 +79,18 @@
 body{
 	background-color: #494949;
 	color: #f0f0f0;
+}
+
+.padding {
+    padding: 2em;
+}
+
+#wishlistItemPrice {
+	margin-left: -3em;
+	margin-right: 5px;
+	margin-top: -1em;
+	margin-bottom: 5px;
+	height: 100px;
+	display: inline-block;
+
 }
