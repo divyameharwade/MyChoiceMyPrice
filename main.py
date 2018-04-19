@@ -292,6 +292,8 @@ def addToCart():
                 cur.execute("INSERT INTO kart (userId, productId) VALUES (?, ?)", (userId, productId))
                 conn.commit()
                 msg = "Added successfully"
+                print("precompute called")
+                # trigger precompution
             except:
                 conn.rollback()
                 msg = "Error occured"
@@ -314,7 +316,8 @@ def cart():
     totalPrice = 0
     for row in products:
         totalPrice += row[2]
-    return render_template("cart.html", products = products, totalPrice=totalPrice, loggedIn=loggedIn, firstName=firstName, noOfItems=noOfItems)
+    recommendations = precompute(userId, products[0][0])
+    return render_template("cart.html", products = products, totalPrice=totalPrice, loggedIn=loggedIn, firstName=firstName, noOfItems=noOfItems, recommendations=recommendations)
 
 
 @app.route("/removeFromCart")
@@ -399,6 +402,7 @@ def removeFromWishlist():
             msg = "error occured"
     conn.close()
     return redirect(url_for('root'))
+
 
 # adding wishlist apis
 @app.route("/moveToCart")
@@ -514,7 +518,6 @@ def addPromo():
     return render_template('promocode.html', promocodes=promocodes)
 
 
-
 def getPromo():
     if 'email' not in session:
         return redirect(url_for('/root'))
@@ -540,6 +543,38 @@ def getPromo():
 def allowed_file(filename):
     return '.' in filename and \
             filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+# @app.route("/precompute")
+def precompute(userId, productId):
+    #get items from wishlist for this userId
+    with sqlite3.connect('database.db') as con:
+        try:
+            con.row_factory = sqlite3.Row
+            cur = con.cursor()
+            cur.execute('''select products.price, products.name, products.image, wishlist.productId from products,wishlist where wishlist.userId={} and wishlist.productId=products.productId'''.format(userId))
+            wishlistItems = cur.fetchall()
+            cur.execute('''select * from promocode''')
+            promocodes = cur.fetchall()
+            cur.execute('''select * from products where productId={}'''.format(productId))
+            productInCart = cur.fetchone()
+            precomputedVals={}
+            recommendations = {}
+            for item in wishlistItems:
+                cart_total = productInCart['price'] + item['price']
+                for promo in promocodes:
+                    discountedtotal = cart_total - cart_total*(promo['discount']/100)
+                    precomputedVals.update({(item, promo):discountedtotal})
+            print("precomputedVals ", precomputedVals)
+            reversed = {v: k for k, v in precomputedVals.items()}
+            sortedvalues = sorted(reversed)
+            for _ in range(3):
+                val = sortedvalues.pop(0)
+                recommendations.update({reversed[val]: val})
+            print(recommendations)
+        except Exception as ex:
+            print(ex)
+    con.close()
+    return recommendations
 
 
 def parse(data):

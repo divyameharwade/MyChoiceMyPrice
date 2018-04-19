@@ -8,3 +8,11 @@ input {
 .panel {
 	color: #494949;
 }
+
+#addpromodiv {
+    text-align: center;
+}
+
+.inline {
+    display: inline-block;
+}

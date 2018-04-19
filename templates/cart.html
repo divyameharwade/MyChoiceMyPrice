@@ -1,43 +1,12 @@
-<!DOCTYPE HTML>
-<html>
-<head>
+{% extends "base.html" %}
+{% block head %}
 <title>Your Cart</title>
 <link rel="stylesheet" href={{url_for('static', filename='css/bootstrap.min.css')}} />
 <link rel="stylesheet" href={{url_for('static', filename='css/cart.css')}} />
 <link rel="stylesheet" href={{url_for('static', filename='css/topStyle.css') }} />
-</head>
-<body>
-<div id="title">
-	<a href="/">
-	<img id="logo" src= {{ url_for('static', filename='images/logo.png') }} />
-	</a>
-	<form>
-		<input id="searchBox" type="text" name="searchQuery">
-		<input id="searchButton" type="submit" value="Search">
-	</form>
+{%  endblock %}
+{% block content %}
 
-	{% if not loggedIn %}
-		<div id="signInButton">
-			<a class="link" href="/loginForm">Sign In</a>
-		</div>
-	{% else %}
-	<div class="dropdown">
-		<button class="dropbtn">Hello, <br>{{firstName}}</button>
-		<div class="dropdown-content">
-			<a href="/account/orders">Your orders</a>
-			<a href="/account/profile">Your profile</a>
-			<hr>
-			<a href="/logout">Sign Out</a>
-		</div>
-	</div>
-	{% endif %}
-	<div id="kart">
-		<a class="link" href="/cart">
-		<img src={{url_for('static', filename='images/shoppingCart.png')}} id="cartIcon" />
-		CART {{noOfItems}}
-		</a>
-	</div>
-</div>
 <div id="cartItems">
 	<h2>Shopping Cart</h2>
 	<div id="tableItems">
@@ -63,7 +32,26 @@
 		</div>
 	</div>
 </div>
+<div>
+<h4 align="center" class="alert alert-info">Tag this along with your items in the wishlist!</h4>
+{% if recommendations %}
+	{% for  (item,promo),total in recommendations.items() %}
+		<div class="inline carddiv" width="400px">
+			<div class="card">
+				<img class="card-img-top" src={{url_for('static', filename='uploads/'+item['image'])}} id="image"/>
+  			<div class="card-body">
+				<h4 class="card-title">{{item['name']}}</h4>
+				<p class="card-text">Promo applied  {{promo['promoname']}}</br>
+					Discount  {{promo['discount']}}% </br>
+					<strong>Your total {{total}}</strong></p>
+    			<a href="/addToCart?productId={{item['productId']}}" class="btn btn-danger">I'll buy this too</a>
+
+  			</div>
+			</div>
+		</div>
+	{% endfor %}
+{% endif %}
+</div>
 <a href="/checkout">Proceed to checkout</a>
-</body>
-</html>
+{% endblock %}
 

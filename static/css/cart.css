@@ -65,3 +65,17 @@
 	font-size: 20px;
 }
 
+.inline {
+    display: inline-block;
+}
+
+.carddiv {
+    padding 5em;
+    color: black;
+    background-color: #ffffff;
+}
+
+body{
+	background-color: #494949;
+	color: #f0f0f0;
+}
