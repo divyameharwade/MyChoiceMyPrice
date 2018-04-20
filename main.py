@@ -330,8 +330,10 @@ def cart():
         print("else block")
         for row in products:
             totalPrice += row[2]
+    recommendations = []
+    if products:
+        recommendations = precompute(userId, products[0][0])
 
-    recommendations = precompute(userId, products[0][0])
     return render_template("cart.html", products = products, totalPrice=totalPrice, loggedIn=loggedIn, firstName=firstName, noOfItems=noOfItems,wishlistnoOfItems=wishlistnoOfItems, recommendations=recommendations)
 
 
@@ -596,6 +598,12 @@ def precompute(userId, productId):
     con.close()
     return recommendations
 
+@app.route('/checkout')
+def checkout():
+    if 'email' not in session:
+        return redirect(url_for('/root'))
+    else:
+        return render_template('checkout.html')
 
 @app.route('/email')
 def email():

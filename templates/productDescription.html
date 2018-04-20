@@ -1,6 +1,5 @@
-<!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/html">
-<head>
+{% extends "base.html" %}
+{% block head %}
 <title>Product Description</title>
 <link rel="stylesheet" href={{url_for('static', filename='css/bootstrap.min.css')}} />
 <link rel="stylesheet" href={{url_for('static', filename='css/productDescription.css')}} />
@@ -9,55 +8,24 @@
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename = 'js/bootstrap.min.js') }}">
 </script>
-</head>
-<body>
-<div id="title">
-	<a href="/">
-		<img id="logo" src= {{ url_for('static', filename='images/logo.png') }} />
-	</a>
-	<form>
-		<input id="searchBox" type="text" name="searchQuery">
-		<input id="searchButton" type="submit" value="Search">
-	</form>
-
-	{% if not loggedIn %}
-	<div id="signInButton">
-		<a class="link" href="/loginForm">Sign In</a>
-	</div>
-	{% else %}
-	<div class="dropdown">
-		<button class="dropbtn">Hello, <br>{{firstName}}</button>
-		<div class="dropdown-content">
-			<a href="/account/orders">Your orders</a>
-			<a href="/account/profile">Your profile</a>
-			<hr>
-			<a href="/logout">Sign Out</a>
-		</div>
-	</div>
-	{% endif %}
-	<div id="kart">
-		<a class="link" href="/cart">
-			<img src={{url_for('static', filename='images/shoppingCart.png')}} id="cartIcon" />
-			CART {{noOfItems}}
-		</a>
-	</div>
-	<div id="wishlist">
-		<a class="link" href="/wishlist">
-			<img src={{url_for('static', filename='images/wishlist.png')}} id="wishlistIcon" />
-			WISHLIST {{wishlistnoOfItems}}
-		</a>
-	</div>
-</div>
-<div id="display">
+{% endblock %}
+{% block content %}
+<div>
+<div class="panel panel-default inline col-sm-4" style="width: 500px">
+<div class="panel-heading" style="background-color: white;">
+	<div id="display">
 	<div id="productName">
-		<h1>{{data[1]}}</h1>
+		<h3 class="panel-title">{{data[1]}}</h3>
 	</div>
 	<div>
+</div>
+	<!-- panel heading 		-->
+	<div class="panel-body">
 		<img src={{url_for('static', filename='uploads/'+data[4]) }} id="productImage"/>
 	</div>
-
+	<div class="panel-footer">
 	<div id="productDescription">
-		<h2>Details</h2>
+		<h3>Details</h3>
 		<table id="descriptionTable">
 			<tr>
 				<td>Name</td>
@@ -72,10 +40,13 @@
 				<td>{{data[5]}}</td>
 			</tr>
 		</table>
-		<h2>Description</h2>
+		<h3>Description</h3>
 		<p>{{data[3]}}</p>
 	</div>
 	<div >
+		<input type="checkbox" name="offer">No shipping cost if opted for 5 day delivery</input><br><br>
+
+
 	<div id="addToCart" style="display: inline-block;">
 		<a href="/addToCart?productId={{request.args.get('productId')}}" class="btn btn-lg btn-success">Add to Cart</a>
 	</div>
@@ -83,7 +54,44 @@
 		<button class="btn btn-lg btn-info" data-toggle="modal" data-target="#setPriceModal">Add to Wishlist</button>
 	</div>
 	</div>
+	</div>
 </div>
+</div>
+</div>
+	<p class="alert alert-warning" style="text-align: center;">Check out the price comparisions and set your own price</p>
+	<div class="panel panel-success inline col-sm-4" style="width :800px;">
+		<div class="panel-heading" style="background-color: white;">
+		<h3 class="panel-title">Price range</h3>
+		</div>
+		<div class="panel-body">
+		<div class="table-responsive">
+		<table align="center" class="table table-hover table-striped">
+		{% set compareprices=[['Company1', '400$', '4 days' ],['Company2', '500$', '4 Days' ],['Company3', '350$', '8 Days' ],['Company4', '320$', '6 Days']] %}
+        {% set names =['Company', 'Product Price(Dollars)', 'Delivery Time' ] %}
+        {% for name in names %}
+        <th>
+            <h5>{{name}}</h5>
+        </th>
+        {% endfor %}
+        {% for otherprice in compareprices %}
+        <tr>
+        {% for each in otherprice %}
+            <td>{{each}}<br></td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+	<button class="btn btn-lg btn-danger" align="center" data-toggle="modal" data-target="#setPriceModal">Set Price</button>
+
+	</div>
+	</div>
+	</div>
+
+
+
+</div>
+
+
 <!--set price modal-->
 <div class="modal_div">
 <div class="modal fade" id="setPriceModal" tabindex="-1" role="dialog" aria-labelledby="setPriceModalLabel" aria-hidden="true">
@@ -111,8 +119,5 @@
           </div>
       </div>
 </div>
-
-
-</body>
-</html>
+{% endblock %}
 
